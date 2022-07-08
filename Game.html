@@ -1,0 +1,246 @@
+<html>
+  <head>
+    <title>Flappy</title>
+    <style>
+      canvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bird" width="280" height="480"></canvas>
+    <script>
+      const screen = document.getElementById("bird");
+      const ctx = screen.getContext("2d");
+      let BIRD = [
+        "images/bird1.png",
+        "images/bird2.png",
+        "images/bird3.png",
+        "images/bird2.png",
+      ];
+      let frame = 1;
+      let bird_frame = 0;
+      let tick = 0;
+      let score = 0;
+      pipes = [];
+      move = true;
+      game = true;
+
+      document.addEventListener("keydown", Tecla);
+      function Tecla(event) {
+        if (event.key == " " && move) {
+          tick = 0;
+          bird.speed = bird.jump;
+        }
+      }
+
+      class Bird {
+        constructor(src, x, y) {
+          this.src = src;
+          this.x = x;
+          this.y = y;
+          this.speed = 0;
+          this.g = 0.25;
+          this.jump = -4.6;
+          this.radius = 12;
+        }
+        draw() {
+          const obj = new Image();
+          obj.src = BIRD[bird_frame];
+          ctx.drawImage(obj, this.x, this.y);
+        }
+        move() {
+          tick += 1;
+          if (this.speed < 8) {
+            this.speed += this.g;
+          } else {
+            this.speed = 4;
+          }
+          if (this.y < 361) {
+            this.y += this.speed;
+          } else {
+            move = false;
+            game = false;
+          }
+        }
+      }
+      class Pipe {
+        constructor() {
+          this.x = 336;
+          this.y = -(Math.random() * (250 - 100) + 100);
+          this.dx = -2;
+          let p = [this.x, this.y, this.x, this.y + 420, true];
+          return p;
+        }
+      }
+      class Obj {
+        constructor(src, sx, sy) {
+          this.src = src;
+          this.sx = sx;
+          this.sy = sy;
+        }
+        draw() {
+          const obj = new Image();
+          obj.src = this.src;
+          ctx.drawImage(obj, this.sx, this.sy);
+        }
+      }
+      function move_things() {
+        if (move) {
+          if (base.sx < -334) {
+            base.sx = 334;
+          }
+          if (base2.sx < -334) {
+            base2.sx = 334;
+          }
+          if (bg.sx < -286) {
+            bg.sx = 286;
+          }
+          if (bg2.sx < -286) {
+            bg2.sx = 286;
+          }
+          base.sx -= 2;
+          base2.sx -= 2;
+          bg.sx -= 1;
+          bg2.sx -= 1;
+        }
+      }
+      function draw_pipes() {
+        for (i in pipes) {
+          const obj = new Image();
+          obj.src = "images/pipetop.png";
+          ctx.drawImage(obj, pipes[i][0], pipes[i][1]);
+          const obj1 = new Image();
+          obj1.src = "images/pipedown.png";
+          ctx.drawImage(obj1, pipes[i][2], pipes[i][3]);
+        }
+      }
+      function move_pipes() {
+        if (move) {
+          for (i in pipes) {
+            pipes[i][0] -= 2;
+            pipes[i][2] -= 2;
+          }
+        }
+      }
+      function draw() {
+        ctx.fillRect(0, 0, screen.width, screen.height);
+        bg.draw();
+        bg2.draw();
+        bird.draw();
+        draw_pipes();
+        base.draw();
+        base2.draw();
+        draw_score();
+        if (!game) {
+          gameover = new Obj("images/gameover.png", 50, 100);
+          gameover.draw();
+        }
+      }
+      function uptate() {
+        if (frame % 5 == 0) {
+          bird_frame += 1;
+        }
+        if (bird_frame > 3) {
+          bird_frame = 0;
+        }
+        if (frame % 125 == 0) {
+          pipes.push(new Pipe());
+          for (i in pipes) {
+            if (pipes[i][0] < 0) {
+              pipes.shift();
+            }
+          }
+        }
+        bird.move();
+        move_things();
+        move_pipes();
+      }
+
+      function draw_score() {
+        if (pipes[0][0] + 52 < bird.x && pipes[0][4]) {
+          score += 1;
+          pipes[0][4] = false;
+        }
+        ctx.fillStyle = "#FFF";
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.font = "35px Teko";
+        ctx.fillText(score, screen.width / 2, 50);
+      }
+
+      function reset() {
+        bird.x = 60;
+        bird.y = 150;
+        pipes = [];
+        pipes.push(new Pipe());
+        frame = 1;
+        score = 0;
+        move = true;
+        game = true;
+      }
+
+      function collision() {
+        for (i in pipes) {
+          if (bird.y < pipes[i][1]) {
+            move = false;
+            game = false;
+            document.addEventListener("keydown", Tecla);
+            function Tecla(event) {
+              if (event.key == "Enter") {
+                reset();
+              }
+            }
+          }
+          if (
+            bird.x + bird.radius > pipes[i][0] &&
+            bird.x - bird.radius < pipes[i][0] + 52 &&
+            bird.y + bird.radius > pipes[i][1] &&
+            bird.y - bird.radius < pipes[i][1] + 300
+          ) {
+            move = false;
+            game = false;
+            document.addEventListener("keydown", Tecla);
+            function Tecla(event) {
+              if (event.key == "Enter") {
+                reset();
+              }
+            }
+          }
+
+          if (
+            bird.x + bird.radius > pipes[i][2] &&
+            bird.x - bird.radius < pipes[i][2] + 52 &&
+            bird.y + bird.radius > pipes[i][3] &&
+            bird.y - bird.radius < pipes[i][3] + 300
+          ) {
+            move = false;
+            game = false;
+            document.addEventListener("keydown", Tecla);
+            function Tecla(event) {
+              if (event.key == "Enter") {
+                reset();
+              }
+            }
+          }
+        }
+      }
+
+      function main() {
+        uptate();
+        draw();
+        collision();
+        frame++;
+        requestAnimationFrame(main);
+      }
+
+      bg = new Obj("images/bg.png", 0, 0);
+      bg2 = new Obj("images/bg.png", 286, 0);
+      bird = new Bird(BIRD[bird_frame], 60, 150);
+      base = new Obj("images/base.png", 0, 385);
+      base2 = new Obj("images/base.png", 336, 385);
+      pipes.push(new Pipe());
+      main();
+    </script>
+  </body>
+</html>
