@@ -3,25 +3,56 @@ from mss import mss
 import cv2
 import numpy as np
 from scipy import spatial
-while True:
-   with mss() as sct:
-        monitor = {"top": 180, "left": 10, "width": 280, "height": 480}
-        screen = np.array(sct.grab(monitor))
-        cano = cv2.imread("./templates/cano_top.jpg")
-        screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY).flatten()
-        cano = cv2.cvtColor(cano,COLOR_BGR2GRAY).flatten()
-        size = len(cano)
-        for i in range(0,len(screen_gray)-len(cano),20):
-            cos = -1*(spatial.distance.cosine(cano,screen_gray[i:i+size])-1)
-            print(cos)
-            if(cos > 0.94):
-                screen = cv2.rectangle(screen, (i//287,i%287), ((i//287) + 50,(i%287) + 30), (0,0,255),5)
-                break
-        cv2.imshow("Eye", screen)
-        cv2.waitKey(1)
 
 
 
+
+
+
+def FindCano(screen, cano):
+    screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+    local = cv2.matchTemplate(screen_gray, cano, cv2.TM_CCOEFF_NORMED)
+    corte = 0.9
+    local_cord = np.where(local >= corte)
+    for i in zip(*local_cord[::-1]):
+        cv2.rectangle(screen, i, (i[0] + 50, i[1] + 40), (0,0,255),5)
+    return screen, local_cord[::-1]
+
+
+def findBird(screen):# [103,203,248] = BGR
+    screen = cv2.cvtColor(screen, cv2.COLOR_RGBA2RGB)
+    lower = np.array([93,193,238])
+    upper = np.array([113,213,258])
+    local = cv2.inRange(screen, lower, upper)
+    local = np.where(local)
+    local = local[::-1]#local é uma array 2d, sendo a primeira os conjuntos dos x, e a segunda os dos y.
+    if len(local[0]) >0:
+        cv2.rectangle(screen, (local[0][0]-10,local[1][0]-10), (local[0][0] + 24, local[1][0] + 24), (255,0,0),5)
+    return screen, local
+
+
+
+
+
+def main():
+    cano = cv2.imread("./templates/cano_top.jpg")
+    cano = cv2.cvtColor(cano,COLOR_BGR2GRAY)
+    while True:
+        with mss() as sct:
+            monitor = {"top": 120, "left": 10, "width": 280, "height": 480}
+            screen = np.array(sct.grab(monitor))
+            screen,canoLocation = FindCano(screen, cano)
+            screen,birdLocation = findBird(screen)
+            try:
+                line = canoLocation[1][0]+120
+                cv2.line(screen, (0,line),(260,line), (0,0,255),5)
+            except:
+                cv2.line(screen, (0,200),(260,200), (0,0,255),5)
+            cv2.imshow("Eye", screen)
+            cv2.waitKey(1)
+
+if __name__ == "__main__":
+    main()
 
 
 """
