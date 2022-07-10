@@ -2,12 +2,13 @@ from cv2 import COLOR_BGR2GRAY
 from mss import mss
 import cv2
 import numpy as np
-from scipy import spatial
+from pynput.keyboard import Key, Controller
+import pygame
+import time
 
-
-
-
-
+def jump(keyboard ):
+    keyboard.press(Key.space)
+    keyboard.release(Key.space)
 
 def FindCano(screen, cano):
     screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
@@ -20,14 +21,15 @@ def FindCano(screen, cano):
 
 
 def findBird(screen):# [103,203,248] = BGR
-    screen = cv2.cvtColor(screen, cv2.COLOR_RGBA2RGB)
-    lower = np.array([46,178,243])
-    upper = np.array([55,188,253])
+    screen = cv2.cvtColor(screen, cv2.COLOR_BGR2HSV)
+    lower = np.array([20,100,20])
+    upper = np.array([30,255,255])
     local = cv2.inRange(screen, lower, upper)
     local = np.where(local)
     local = local[::-1]#local é uma array 2d, sendo a primeira os conjuntos dos x, e a segunda os dos y.
     if len(local[0]) >0:
-        cv2.rectangle(screen, (local[0][0]-10,local[1][0]-10), (local[0][0] + 24, local[1][0] + 24), (255,0,0),5)
+        cv2.rectangle(screen, (local[0][0]-10,local[1][0]-10), (local[0][0] + 24, local[1][0] + 24), (0,255,255),5)
+    screen = cv2.cvtColor(screen,cv2.COLOR_HSV2BGR)
     return screen, local
 
 
@@ -37,24 +39,36 @@ def findBird(screen):# [103,203,248] = BGR
 def main():
     cano = cv2.imread("./templates/cano_top.jpg")
     cano = cv2.cvtColor(cano,COLOR_BGR2GRAY)
+    keyboard = Controller()
+    clock = pygame.time.Clock()
     while True:
+        clock.tick(20)
         with mss() as sct:
             monitor = {"top": 120, "left": 10, "width": 280, "height": 480}
             screen = np.array(sct.grab(monitor))
             #screen = cv2.imread("./templates/teste.png")
             screen,canoLocation = FindCano(screen, cano)
             screen,birdLocation = findBird(screen)
-            
+            distance= 0
             try:
-                lineCano = canoLocation[1][0]+120
-                cv2.line(screen, (0,lineCano),(260,lineCano), (0,0,255),5)
+                lineCano = canoLocation[1][0]+143
+                cv2.line(screen, (0,lineCano),(280,lineCano), (0,0,255),5)
             except:
-                cv2.line(screen, (0,200),(260,200), (0,0,255),5)
+                lineCano= 200
+                cv2.line(screen, (0,lineCano),(280,lineCano), (0,0,255),5)
             try:
                 lineBird = (birdLocation[0][0], birdLocation[1][0])
                 cv2.line(screen, lineBird, (birdLocation[0][0], lineCano), (0,0,255), 5)
+                if(len(birdLocation)):
+                    distance = birdLocation[1][0] - lineCano
+                else:
+                    distance = -100
             except:
                 pass
+            if(distance != 0 and distance > -60):
+                print(distance)
+                jump(keyboard)
+                time.sleep(0.3)
             cv2.imshow("Eye", screen)
             cv2.waitKey(1)
 
