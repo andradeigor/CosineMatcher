@@ -21,8 +21,8 @@ def FindCano(screen, cano):
 
 def findBird(screen):# [103,203,248] = BGR
     screen = cv2.cvtColor(screen, cv2.COLOR_RGBA2RGB)
-    lower = np.array([93,193,238])
-    upper = np.array([113,213,258])
+    lower = np.array([46,178,243])
+    upper = np.array([55,188,253])
     local = cv2.inRange(screen, lower, upper)
     local = np.where(local)
     local = local[::-1]#local é uma array 2d, sendo a primeira os conjuntos dos x, e a segunda os dos y.
@@ -41,13 +41,20 @@ def main():
         with mss() as sct:
             monitor = {"top": 120, "left": 10, "width": 280, "height": 480}
             screen = np.array(sct.grab(monitor))
+            #screen = cv2.imread("./templates/teste.png")
             screen,canoLocation = FindCano(screen, cano)
             screen,birdLocation = findBird(screen)
+            
             try:
-                line = canoLocation[1][0]+120
-                cv2.line(screen, (0,line),(260,line), (0,0,255),5)
+                lineCano = canoLocation[1][0]+120
+                cv2.line(screen, (0,lineCano),(260,lineCano), (0,0,255),5)
             except:
                 cv2.line(screen, (0,200),(260,200), (0,0,255),5)
+            try:
+                lineBird = (birdLocation[0][0], birdLocation[1][0])
+                cv2.line(screen, lineBird, (birdLocation[0][0], lineCano), (0,0,255), 5)
+            except:
+                pass
             cv2.imshow("Eye", screen)
             cv2.waitKey(1)
 
