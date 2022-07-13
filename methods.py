@@ -36,16 +36,18 @@ def template_matching(I,T):
 
 
 def main():
-    I = np.array([[1.0,1.0,2.0,3.0],[2.0,3.0,4.0,5.0],
-    [3.0,4.0,5.0,6.0],[3.0,4.0,5.0,6.0]])
-    T = np.array([[4.0,5.0], [5.0, 6.1]])
+    #I = np.array([[1.0,1.0,2.0,3.0],[2.0,3.0,4.0,5.0],
+    #[3.0,4.0,5.0,6.0],[3.0,4.0,5.0,6.0]])
+    #T = np.array([[4.0,5.0], [5.0, 6.1]])
+    I = np.random.randint(100,size=(4,4))
+    T = I[0:2,2:4]
     result = template_matching(I,T)
     for i in I:
         print(i)
-    print("-----------------")
+    print("==================")
     for i in T:
         print(i)
-    print("-----------------")
+    print("==================")
     for i in result:
         print(i)
 if __name__ == "__main__":
