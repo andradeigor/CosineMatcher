@@ -45,7 +45,7 @@ Projeto desenvolvido por [Igor Andrade](https://github.com/andradeigor). Este pr
 
 ### Assim:
 
-## $||A||^2 = x*1^2+x_2^2 = {\displaystyle \sum*{i=1}^{k} x_i^2} $
+## $||A||^2 = x* 1^2+x_2^2 = {\displaystyle \sum*{i=1}^{k} x_i^2} $
 
 ### Por fim, temos que:
 
