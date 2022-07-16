@@ -25,7 +25,7 @@ Projeto desenvolvido por [Igor Andrade](https://github.com/andradeigor). Este pr
 
 ### Considere A, B dois vetores em $R^2$ de modo que $A= [x_1,x_2]$ e $B=[y_1,y_2]$
 
-## $A'.B= x_1*y_1+x_2*y_2$
+## $A'.B= x_1* y_1+x_2 *y_2$
 
 ### Uma forma de escrever isso mais genérico e em "matemática" seria:
 
