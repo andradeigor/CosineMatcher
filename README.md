@@ -65,6 +65,12 @@ Queremos calcular o cosseno entre dois pontos: G e J. Entretanto, se considerarm
 
 ## $cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})*(y_i-\overline{y})}{\sqrt{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})^2 * \displaystyle \sum_{i=1}^{k} (y_i-\overline{y})^2}}$
 
+O objetivo desse trabalho é realizar esses cálculos para imagens, para fazer isso, basta entender que imagens são na verdade matrizes de pixel e extender os somatórios acimas para duas dimenssões. Fazendo isso, chegamos na mesma formula dada pela documentação do OpenCv para o cálculo de Template Matching:
+
+![math](https://user-images.githubusercontent.com/21049910/179336556-37bf25c0-9646-42b8-abaf-30ef5889f53d.png)
+
+Nessa formula, T e I são as matrizes do Template e Imagem, T' e I' são o valor da possíção x,y menos a média.
+
 ## 🤖 Como Usar:
 
 Rodando o Servidor localmente
