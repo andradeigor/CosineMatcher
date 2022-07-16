@@ -45,11 +45,11 @@ Projeto desenvolvido por [Igor Andrade](https://github.com/andradeigor). Este pr
 
 ### Assim:
 
-## $||A||^2 = x* 1^2+x_2^2 = {\displaystyle \sum*{i=1}^{k} x_i^2} $
+## $||A||^2 = x_{1}^2+x_2^2 = {\displaystyle \sum_{i=1}^{k} x_i^2} $
 
 ### Por fim, temos que:
 
-## $||A||= {\sqrt{\displaystyle \sum\_{i=1}^{k} x_i^2}} $
+## $||A||= {\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2}} $
 
 ### Agora, finalmente podemos "ver" como calcular o cosseno entre dois vetores de forma mais "matemática", que também é uma forma mais simples de ser implementada computacionalmente:
 
