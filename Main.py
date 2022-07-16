@@ -16,7 +16,7 @@ def jump(keyboard ):
 
 def FindCano(screen, cano):
     screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-    local = cv2.matchTemplate(screen_gray, cano, cv2.TM_CCOEFF)
+    local = cv2.matchTemplate(screen_gray, cano, cv2.TM_CCOEFF_NORMED)
     corte = 0.9
     local_cord = np.where(local >= corte)
     for i in zip(*local_cord[::-1]):
@@ -92,7 +92,7 @@ def findBird(screen):# [103,203,248] = BGR
 
 def main():
     cano = cv2.imread("./templates/cano_top.png")
-    #cano = cv2.cvtColor(cano, cv2.COLOR_BGRA2GRAY)
+    cano = cv2.cvtColor(cano, cv2.COLOR_BGRA2GRAY)
     keyboard = Controller()
     clock = pygame.time.Clock()
     while True:
@@ -101,11 +101,11 @@ def main():
             monitor = {"top": 120, "left": 10, "width": 280, "height": 480}
             screen = np.array(sct.grab(monitor))
             #screen = cv2.imread("./templates/teste3.png")
-            screen,canoLocation = MyFindCano(screen, cano)
+            screen,canoLocation = FindCano(screen, cano)
             screen,birdLocation = findBird(screen)
             distance= 0
             try:
-                lineCano = canoLocation[1]+143
+                lineCano = canoLocation[1][0]+143
                 cv2.line(screen, (0,lineCano),(280,lineCano), (0,0,255),5)
             except:
                 lineCano= 200
@@ -120,7 +120,6 @@ def main():
             except:
                 pass
             if(distance != 0 and distance > -60):
-                #print(distance)
                 jump(keyboard)
                 time.sleep(0.25)      
             cv2.imshow("Eye", screen)
@@ -129,33 +128,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-"""
-def cosine(a,b):
-    interProduct = 0
-    for i in range(len(a)):
-        interProduct+= int(a[i]) * int(b[i])
-    normA = np.linalg.norm(a)
-    normB = np.linalg.norm(b)
-    return interProduct/(normA*normB)
-screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-teste = cv2.cvtColor(teste, cv2.COLOR_BGR2GRAY)
-
-screen = screen.flatten()
-teste_flatten = teste.flatten()
-size = len(screen)
-
-for i in range(0,len(teste_flatten)-len(screen)):
-    cos = spatial.distance.cosine(screen,teste_flatten[i:i+size])
-    if(cos > 0.94):
-        teste = cv2.rectangle(teste, (i//287,i%287), ((i//287) + 50,(i%287) + 30), (0,0,255),5)
-        cv2.imshow("Eye", teste)
-        cv2.waitKey(0)
-
-"""
-
-#for i in screen:
-#    for k in i:
-#        print(k)
-#cv2.imshow("Eye", screen)
-#cv2.waitKey(0)
