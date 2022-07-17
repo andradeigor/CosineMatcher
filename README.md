@@ -17,7 +17,7 @@ Para entender este projeto é preciso ter em mente como funciona o cálculo do c
 
 O Cosseno entre os vetores A e B pode ser calculado da seguinte forma:
 
-## $cos(A,B) = \frac{A'.B}{||A||\; ||B||}$
+## $cos(A,B) = \frac{A'.B}{||A|| ||B||}$
 
 Outra coisa que vale chamar atenção é que o cosseno entre dois vetores varia de [ -1 , 1 ], e ele pode ser interpretado como o quão próximo dois vetores são. Embora não seja uma métrica perfeita, ele irá resultar em 1 caso um vetor(A) seja uma combinação linear do outro vetor(B). E irá retornar 0 caso os vetores sejam perpendiculares. Assim, podemos ver o cos como uma % do quão próximo o nosso vetor é de outro.
 
