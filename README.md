@@ -141,8 +141,8 @@ def main():
 
     y,x,_ = template.shape
     result_1 = template_matching(Image_gray,template_gray)
-    result_1 = result_1[::-1]
     result_1 = np.unravel_index(np.argmax(result_1, axis=None), result_1.shape)
+    result_1 = result_1[::-1]
     Image = cv2.rectangle(Image, result_1, (result_1[0] + x, result_1[1] + y), (0,0,255),5)
     cv2.imshow("Eye", Image)
     cv2.waitKey(0)
