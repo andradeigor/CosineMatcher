@@ -55,7 +55,7 @@ Agora, finalmente podemos "ver" como calcular o cosseno entre dois vetores de fo
 
 ## $cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} x_i*y_i}{\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2 * \displaystyle \sum_{i=1}^{k} y_i^2}}$
 
- Em estetística, essa formula é chamada de "Pearson correlation coefficient". Aqui, podemos ver que ela nada mais é do que cosseno entre dois vetores.
+ Em estatística, essa formula é chamada de "Pearson correlation coefficient". Aqui, podemos ver que ela nada mais é do que cosseno entre dois vetores.
 
 Por fim, um "truque" que muitas vezes é usado quando estamos calculando essa correlação entre dois vetores é tirar a média de todos os pontos envolvidos naquele vetor. Imagine a seguinte situação:
 
@@ -78,7 +78,7 @@ Queremos implementar o cosseno de modo que dada uma matriz I que seja mxn, um te
 
 Aqui, podemos ver claramente que a posição (1,1) possui a maior porcentagem, 100% neste caso, e se olharmos a matriz gerada nessa posição, podemos ver que de fato é onde o template se encontra.
 
-Esse cálculo foi feito como relatado acima. Dado uma matriz I e o template T, criamos uma matriz de tamanho R e fazemos um loop que percorre essa matriz, calculando o cosseno em casa um dos pontos. O cálculo foi implementado da seguinte forma:
+Esse cálculo foi feito como relatado acima. Dado uma matriz I e o template T, criamos uma matriz de tamanho R e fazemos um loop que percorre essa matriz, calculando o cosseno em cada um dos pontos. O cálculo foi implementado da seguinte forma:
 
 ```python
 def template_matching(I,T):
