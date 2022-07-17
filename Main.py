@@ -24,53 +24,9 @@ def FindCano(screen, cano):
     return screen, local_cord[::-1]
 
 
-def Cosine(array1,array2):
-    cosine = np.dot(array1, array2) / (np.linalg.norm(array1) * np.linalg.norm(array2))
-    return cosine
-
-
-def distance(array1, array2):
-    return np.linalg.norm(array1-array2)
-
-
-def CorrelationCoenficy(array1,array2):
-    sumX2 =0
-    sumY2 =0
-    sumXY = 0
-    meanX = np.mean(array1)
-    meanY = np.mean(array2)
-    for i in range(len(array1)):
-        sumX2 +=int(array1[i]-meanX)**2
-        sumY2 +=int( array2[i]-meanY)**2
-        sumXY +=int( array1[i]-meanX)*int(array2[i]-meanY)
-    deno = (math.sqrt(sumX2) * math.sqrt(sumY2))
-    if(deno==0): return 0
-    CC = sumXY/ deno
-    return CC
     
 
 
-
-
-def MyFindCano(screen, cano):
-    screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGRA2BGR)
-    y,x,z = cano.shape
-    cano_flatten = cano.flatten()
-    location = False
-    scren_save = []
-    min = 0
-    for k in range(0,len(screen_gray),y):
-        for i in range(0,len(screen_gray[0]),x):
-            newScreen = screen_gray[k:k+y,i:i+x]
-            newScreenFlat = newScreen.flatten()
-            if(len(cano_flatten) == len(newScreenFlat)):
-                similarity = abs(CorrelationCoenficy(newScreenFlat,cano_flatten))      
-                if(similarity >=min and similarity>=0.4):
-                    min = similarity
-                    location = [x,y]
-    if(location):
-        cv2.rectangle(screen, (location[0],location[1]), (location[0] + 50, location[1] + 40), (0,0,255),5)
-    return screen,location
 
 
 
