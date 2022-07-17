@@ -2,7 +2,7 @@
 
 Projeto desenvolvido por [Igor Andrade](https://github.com/andradeigor). Este projeto foi feito como projeto final da disciplina Algebra Linear Algorítmica, consiste em uma implementação do cosseno para servir como um Template Matching.
 
-- [Como usar](#como-usar)
+- [Teoria](#teoria)
 - [Demonstração](#demonstração)
 - [Responsividade](#responsive)
 - [Tecnologias](#tecnologias)
