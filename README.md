@@ -154,11 +154,11 @@ Com isso, confirmamos que de fato nossa implementação funciona. Entretanto, pa
 ![final](https://media.giphy.com/media/BZbFITdrcI54x2qYbF/giphy.gif)
 ## 🤖 Como Usar:
 
-Rodando o Servidor localmente
+Rodando o Bot localmente
 
 ```bash
  # Clone esse repositório
- $ git clone https://github.com/andradeigor/ts-landing-page
+ $ git clone https://github.com/andradeigor/CosineMatcher
 
  # Acesse a pasta do projeto
  $ cd CosineMatcher
@@ -185,7 +185,7 @@ Rodando o Servidor localmente
 ## 👥 Contribuidores
 
 Esses são os contribuidores do projeto (<a href="https://allcontributors.org/docs/en/emoji-key">emoji key</a>).
-\
+
 
 <table>
   <tr>

@@ -5,10 +5,6 @@ import numpy as np
 from pynput.keyboard import Key, Controller
 import pygame
 import time
-from scipy import spatial
-import sys
-import math
-np.set_printoptions(threshold=sys.maxsize)
 
 def jump(keyboard ):
     keyboard.press(Key.space)
@@ -22,10 +18,6 @@ def FindCano(screen, cano):
     for i in zip(*local_cord[::-1]):
         cv2.rectangle(screen, i, (i[0] + 50, i[1] + 40), (0,0,255),5)
     return screen, local_cord[::-1]
-
-
-    
-
 
 
 
