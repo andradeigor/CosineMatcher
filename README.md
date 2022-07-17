@@ -149,6 +149,9 @@ def main():
 ```
 
 Com isso, confirmamos que de fato nossa implementação funciona. Entretanto, para o propósito desse trabalho eu precisaria de uma implementação otimizada. Por ser algo fora do escopo do curso acabei por fazer o resto do trabalho ultilizando a função disponível na biblioteca [OpenCV](https://docs.opencv.org/4.x/index.html). Assim, o que implementamos no final das contas foi um bot que ultiliza cosseno como template matching para "zerar" Flappy Bird.
+
+### Resultado Final:
+![final](https://media.giphy.com/media/BZbFITdrcI54x2qYbF/giphy.gif)
 ## 🤖 Como Usar:
 
 Rodando o Servidor localmente
@@ -158,30 +161,26 @@ Rodando o Servidor localmente
  $ git clone https://github.com/andradeigor/ts-landing-page
 
  # Acesse a pasta do projeto
- $ cd ts-landing-page
+ $ cd CosineMatcher
 
- # Instale dependências
- $ yarn
+ # Abre o Game.html no navedador e coloque em tela cheia
 
  # Starte o Projeto
- $ yarn start
+ $ Python3 Main.py
 
 ```
 
 ## 📜 Demonstração:
 
-![demonstration](https://media1.giphy.com/media/6vwUeAP0tN2sI3nQZY/giphy.gif?cid=790b76118a124e0d1427f4c892d9af8e7b7c997496567ce0&rid=giphy.gif&ct=g)
-
-## 📜 Reponsividade:
-
-![responsive](https://media0.giphy.com/media/S5wV4tHJlQq2YMAen8/giphy.gif?cid=790b7611de91134d28c6feb0c04c2ef9bcc38537df01c458&rid=giphy.gif&ct=g)
+![final](https://media.giphy.com/media/BZbFITdrcI54x2qYbF/giphy.gif)
 
 ## 💻 Tecnologias
 
-- React
-- Typescript
-- React-Hook-Form
-- Styled Components
+- Python
+- OpenCV
+- Pygame
+- mss
+- pynput
 
 ## 👥 Contribuidores
 
