@@ -139,11 +139,11 @@ def main():
     Image = cv2.imread("./templates/teste.png")
     Image_gray = cv2.cvtColor(Image,cv2.COLOR_BGR2GRAY)
 
-    x,y,_ = template.shape
+    y,x,_ = template.shape
     result_1 = template_matching(Image_gray,template_gray)
-    
+    result_1 = result_1[::-1]
     result_1 = np.unravel_index(np.argmax(result_1, axis=None), result_1.shape)
-    Image = cv2.rectangle(Image, result_1, (result_1[1] + y, result_1[0] + x), (0,0,255),5)
+    Image = cv2.rectangle(Image, result_1, (result_1[0] + x, result_1[1] + y), (0,0,255),5)
     cv2.imshow("Eye", Image)
     cv2.waitKey(0)
 ```
