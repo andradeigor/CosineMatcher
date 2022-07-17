@@ -71,6 +71,84 @@ O objetivo desse trabalho é realizar esses cálculos para imagens, para fazer i
 
 Nessa formula, T e I são as matrizes do Template e Imagem, T' e I' são o valor da possíção x,y menos a média.
 
+## 💻 Implementação:
+Queremos implementar o cosseno de modo que dada uma matriz I que seja mxn, um template T que seja kxj com k<=m e j<=n, nosso código percorra a matriz I de forma a gerar uma nova matriz R que contenha a % de semelhança entre T e a seção da matriz I naquela possição. Essa matriz R terá dimensões $(m-k+1)$ x $(n-j+1)$, assim, a posição de R que tiver a maior % será o melhor match em I para o nosso template:
+
+![math](https://user-images.githubusercontent.com/21049910/179375527-e817b34e-1561-4236-9101-809f6c9f74e0.png)
+
+Aqui, podemos ver claramente que a posição (1,1) possui a maior porcentagem, 100% neste caso, e se olharmos a matriz gerada nessa posição, podemos ver que de fato é onde o template se encontra.
+
+Esse cálculo foi feito como relatado acima. Dado uma matriz I e o template T, criamos uma matriz de tamanho R e fazemos um loop que percorre essa matriz, calculando o cosseno em casa um dos pontos. O cálculo foi implementado da seguinte forma:
+
+```python
+def template_matching(I,T):
+    w,h = T.shape
+    W,H = I.shape
+    mediaT = np.mean(T)
+    results = np.zeros((W-w+1,H-h+1))
+    for x in range(len(results)):
+        for y in range(len(results[0])):
+            results[x][y] = R(x,y,I,T,mediaT)
+    return results
+```
+
+Aqui, a implementação do calculo do cosseno:
+
+```python
+def R(x,y,I,T,mediaT):
+    xt,yt = T.shape
+    r_num = 0
+    r_dem_T = 0
+    r_dem_I = 0
+    mediaI = np.mean(I[x:x+xt, y:y+yt])
+
+    for xLinha in range(xt):
+        for yLinha in range(yt):
+            T_Linha = T[xLinha][yLinha] - mediaT
+            I_Linha = I[x+xLinha][y+yLinha] - mediaI 
+            r_num+= (T_Linha)*(I_Linha) 
+            r_dem_T+= (T_Linha)**2
+            r_dem_I += (I_Linha)**2
+
+    r_dem = (math.sqrt((r_dem_T*r_dem_I)))
+    if(r_dem ==0):
+        return 0
+    r = r_num/r_dem
+    return r
+``` 
+Se abstrairmos um pouco o conceito de imagens, podemos interpretar imagens como matrizes. E, indo além, podemos usar esse algoritmo para procurar objetos dentro de imagens. É nisso que se foca esse projeto.
+
+Agora, com isso em mente, podemos tomar a seguinte imagem como exemplo, e o seguinte template:
+
+### Imagem:
+![imagem](https://user-images.githubusercontent.com/21049910/179375714-a25f4e35-6a01-440d-879a-522880c804c3.png)
+
+### Template:
+![Template](https://user-images.githubusercontent.com/21049910/179375729-c0d76aaa-e166-488e-a144-548a4766c608.jpg)
+
+Após o nosso algoritmo rodar por BASTANTE tempo(em torno de 10 minutos). Obtemos a matriz R, ao procurarmos o maior resultado dela e pegarmos o seu index, podemos desenhar um retângulo do tamanho do template entorno do local encontrado. Assim, confirmando que de fato nosso algoritmo funciona:
+
+### Resultado:
+![Resultado](https://user-images.githubusercontent.com/21049910/179375766-d140947f-904f-42ab-aa2e-a0ea6b32ff8a.png)
+
+### Código:
+```python
+def main():
+    template = cv2.imread("./templates/cano_top.png")
+    template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+    Image = cv2.imread("./templates/teste.png")
+    Image_gray = cv2.cvtColor(Image,cv2.COLOR_BGR2GRAY)
+
+    x,y,_ = template.shape
+    result_1 = template_matching(Image_gray,template_gray)
+    
+    result_1 = np.unravel_index(np.argmax(result_1, axis=None), result_1.shape)
+    Image = cv2.rectangle(Image, result_1, (result_1[1] + y, result_1[0] + x), (0,0,255),5)
+    cv2.imshow("Eye", Image)
+    cv2.waitKey(0)
+```
+
+Com isso, confirmamos que de fato nossa implementação funciona. Entretanto, para o propósito desse trabalho eu precisaria de uma implementação otimizada. Por ser algo fora do escopo do curso acabei por fazer o resto do trabalho ultilizando a função disponível na biblioteca [OpenCV](https://docs.opencv.org/4.x/index.html). Assim, o que implementamos no final das contas foi um bot que ultiliza cosseno como template matching para "zerar" Flappy Bird.
 ## 🤖 Como Usar:
 
 Rodando o Servidor localmente
