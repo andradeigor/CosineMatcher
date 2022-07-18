@@ -42,35 +42,18 @@ def template_matching(I,T):
 
 
 def main():
-    template = cv2.imread("./templates/cano_top.png")
-    template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
-    Image = cv2.imread("./templates/teste.png")
-    Image_gray = cv2.cvtColor(Image,cv2.COLOR_BGR2GRAY)
-
-    x,y,_ = template.shape
-    result_1 = template_matching(Image_gray,template_gray)
-    
-    result_1 = np.unravel_index(np.argmax(result_1, axis=None), result_1.shape)
-    Image = cv2.rectangle(Image, result_1, (result_1[1] + y, result_1[0] + x), (0,0,255),5)
-    cv2.imshow("Eye", Image)
-    cv2.waitKey(0)
+    for i in range(10):
+        I = np.random.randint(255,size=(100,50))
+        I = np.uint8(I)
+        T = I[1:3,1:3]
+        result_1 = template_matching(I,T)
+        result_2 = cv2.matchTemplate(I, T,cv2.TM_CCOEFF_NORMED)
+        result_1 = np.unravel_index(np.argmax(result_1, axis=None), result_1.shape)
+        result_2 =  np.unravel_index(np.argmax(result_2, axis=None), result_2.shape)
+        print(result_1==result_2)
 
 
 if __name__ == "__main__":
     main()
 
-
-
-
-
-
-
-    x,y,z = template.shape
-    #for i in range(100):
-    #I = np.random.randint(255,size=(5,6))
-    #I = np.uint8(I)
-    #T = I[1:3,1:3]
-    #result_2 = cv2.matchTemplate(I, T,cv2.TM_CCOEFF_NORMED)
-    result_1 = np.unravel_index(np.argmax(result_1, axis=None), result_1.shape)
-    #result_2 =  np.unravel_index(np.argmax(result_2, axis=None), result_2.shape)
     
