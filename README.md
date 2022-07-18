@@ -1,6 +1,6 @@
 # CosineMatcher
 
-Projeto desenvolvido por [Igor Andrade](https://github.com/andradeigor). Este projeto foi feito como projeto final da disciplina Algebra Linear Algorítmica, consiste em uma implementação do cosseno para servir como um Template Matching.
+Projeto desenvolvido por [Igor Andrade](https://github.com/andradeigor). Este projeto foi feito como projeto final da disciplina Álgebra Linear Algorítmica, consiste em uma implementação do cosseno para servir como um Template Matching.
 
 * [Teoria](#🖋-teoria)
 * [Implementação](#💻-implementação)
@@ -31,15 +31,15 @@ Uma forma de escrever isso mais genérico e em "matemática" seria:
 
 ## ${\displaystyle \sum_{i=1}^{k} x_i*y_i}$
 
-Uma das vatagens de escrever nessa notação é que independente de qual dimensão esteja nossos vetores, essa formula vai funcionar. Não só isso, como também é inderessante notar que mesmo que não sejamos capaz de imaginar o que seria o cosseno entre dois vetores em $R^n$ essa forma de escrever ele não só nos permite calcular, como também nos dá de fato uma medida de semelhança entre esses dois vetores.
+Uma das vantagens de escrever nessa notação é que independente de qual dimensão esteja nossos vetores, essa fórmula vai funcionar. Não só isso, como também é interessante notar que mesmo que não sejamos capaz de imaginar o que seria o cosseno entre dois vetores em $R^n$ essa forma de escrever ele não só nos permite calcular, como também nos dá de fato uma medida de semelhança entre esses dois vetores.
 
-Agora, falta analizarmos a parte do denominador da formula do cosseno:
+Agora, falta analisarmos a parte do denominador da fórmula do cosseno:
 
 Seja A um vetor qualquer em $R^2$ tal que $A=[x_1,x_2]$ dizemos que:
 
 ## $||A||^2 = A'.A$
 
-Por comparação com a formula acima, podemos concluir que:
+Por comparação com a fórmula acima, podemos concluir que:
 
 ## $||A||^2 = A'.A = x_1^2+x_2^2$
 
@@ -55,24 +55,24 @@ Agora, finalmente podemos "ver" como calcular o cosseno entre dois vetores de fo
 
 ## $cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} x_i*y_i}{\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2 * \displaystyle \sum_{i=1}^{k} y_i^2}}$
 
- Em estatística, essa formula é chamada de "Pearson correlation coefficient". Aqui, podemos ver que ela nada mais é do que cosseno entre dois vetores.
+ Em estatística, essa fórmula é chamada de "Pearson correlation coefficient". Aqui, podemos ver que ela nada mais é do que cosseno entre dois vetores.
 
 Por fim, um "truque" que muitas vezes é usado quando estamos calculando essa correlação entre dois vetores é tirar a média de todos os pontos envolvidos naquele vetor. Imagine a seguinte situação:
 
 ![graph2](https://user-images.githubusercontent.com/21049910/179334430-af0221f8-b277-4cc7-9d84-1c7c9fecef59.png)
 
-Queremos calcular o cosseno entre dois pontos: G e J. Entretanto, se considerarmos seus vetores como vindo da origem, iremos ter uma relação que não reflete como eles se relacionam dentro do seu universo de pontos. Para corrigir isso, é comum retirarmos a média entre todos os pontos envolvidos, isso faz com que todos os pontos sejam "transladados" para a origem. Uma outra forma de entender é que a origem passa a ser o ponto M(verde na figura). Assim, temos finalmente a versão mais comum da formula:
+Queremos calcular o cosseno entre dois pontos: G e J. Entretanto, se considerarmos seus vetores como vindo da origem, iremos ter uma relação que não reflete como eles se relacionam dentro do seu universo de pontos. Para corrigir isso, é comum retirarmos a média entre todos os pontos envolvidos, isso faz com que todos os pontos sejam "transladados" para a origem. Uma outra forma de entender é que a origem passa a ser o ponto M(verde na figura). Assim, temos finalmente a versão mais comum da fórmula:
 
 ## $cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})*(y_i-\overline{y})}{\sqrt{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})^2 * \displaystyle \sum_{i=1}^{k} (y_i-\overline{y})^2}}$
 
-O objetivo desse trabalho é realizar esses cálculos para imagens, para fazer isso, basta entender que imagens são na verdade matrizes de pixel e extender os somatórios acimas para duas dimenssões. Fazendo isso, chegamos na mesma formula dada pela documentação do OpenCv para o cálculo de Template Matching:
+O objetivo desse trabalho é realizar esses cálculos para imagens, para fazer isso, basta entender que imagens são na verdade matrizes de pixel e estender os somatórios acima para duas dimensões. Fazendo isso, chegamos na mesma fórmula dada pela documentação do OpenCv para o cálculo de Template Matching:
 
 ![math](https://user-images.githubusercontent.com/21049910/179336556-37bf25c0-9646-42b8-abaf-30ef5889f53d.png)
 
-Nessa formula, T e I são as matrizes do Template e Imagem, T' e I' são o valor da possíção x,y menos a média.
+Nessa fórmula, T e I são as matrizes do Template e Imagem, T' e I' são o valor da posição x,y menos a média.
 
 ## 💻 Implementação:
-Queremos implementar o cosseno de modo que dada uma matriz I que seja mxn, um template T que seja kxj com k<=m e j<=n, nosso código percorra a matriz I de forma a gerar uma nova matriz R que contenha a % de semelhança entre T e a seção da matriz I naquela possição. Essa matriz R terá dimensões $(m-k+1)$ x $(n-j+1)$, assim, a posição de R que tiver a maior % será o melhor match em I para o nosso template:
+Queremos implementar o cosseno de modo que dada uma matriz I que seja mxn, um template T que seja kxj com k<=m e j<=n, nosso código percorra a matriz I de forma a gerar uma nova matriz R que contenha a % de semelhança entre T e a seção da matriz I naquela posição. Essa matriz R terá dimensões $(m-k+1)$ x $(n-j+1)$, assim, a posição de R que tiver a maior % será o melhor match em I para o nosso template:
 
 ![math](https://user-images.githubusercontent.com/21049910/179375527-e817b34e-1561-4236-9101-809f6c9f74e0.png)
 
@@ -92,7 +92,7 @@ def template_matching(I,T):
     return results
 ```
 
-Aqui, a implementação do calculo do cosseno:
+Aqui, a implementação do cálculo do cosseno:
 
 ```python
 def R(x,y,I,T,mediaT):
@@ -126,7 +126,7 @@ Agora, com isso em mente, podemos tomar a seguinte imagem como exemplo, e o segu
 ### Template:
 ![Template](https://user-images.githubusercontent.com/21049910/179375729-c0d76aaa-e166-488e-a144-548a4766c608.jpg)
 
-Após o nosso algoritmo rodar por BASTANTE tempo(em torno de 10 minutos). Obtemos a matriz R, ao procurarmos o maior resultado dela e pegarmos o seu index, podemos desenhar um retângulo do tamanho do template entorno do local encontrado. Assim, confirmando que de fato nosso algoritmo funciona:
+Após o nosso algoritmo rodar por BASTANTE tempo(em torno de 10 minutos). Obtemos a matriz R, ao procurarmos o maior resultado dela e pegarmos o seu index, podemos desenhar um retângulo do tamanho do template em torno do local encontrado. Assim, confirmando que de fato nosso algoritmo funciona:
 
 ### Resultado:
 ![Resultado](https://user-images.githubusercontent.com/21049910/179375766-d140947f-904f-42ab-aa2e-a0ea6b32ff8a.png)
@@ -148,7 +148,7 @@ def main():
     cv2.waitKey(0)
 ```
 
-Com isso, confirmamos que de fato nossa implementação funciona. Entretanto, para o propósito desse trabalho eu precisaria de uma implementação otimizada. Por ser algo fora do escopo do curso acabei por fazer o resto do trabalho ultilizando a função disponível na biblioteca [OpenCV](https://docs.opencv.org/4.x/index.html). Assim, o que implementamos no final das contas foi um bot que ultiliza cosseno como template matching para "zerar" Flappy Bird.
+Com isso, confirmamos que de fato nossa implementação funciona. Entretanto, para o propósito desse trabalho eu precisaria de uma implementação otimizada. Por ser algo fora do escopo do curso acabei por fazer o resto do trabalho utilizando a função disponível na biblioteca [OpenCV](https://docs.opencv.org/4.x/index.html). Assim, o que implementamos no final das contas foi um bot que utiliza cosseno como template matching para "zerar" Flappy Bird.
 
 ### Resultado Final:
 ![final](https://media.giphy.com/media/BZbFITdrcI54x2qYbF/giphy.gif)
@@ -163,7 +163,7 @@ Rodando o Bot localmente
  # Acesse a pasta do projeto
  $ cd CosineMatcher
 
- # Abre o Game.html no navedador e coloque em tela cheia
+ # Abre o Game.html no navegador e coloque em tela cheia
 
  # Starte o Projeto
  $ Python3 Main.py
