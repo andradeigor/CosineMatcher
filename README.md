@@ -17,7 +17,7 @@ Para entender este projeto é preciso ter em mente como funciona o cálculo do c
 
 O Cosseno entre os vetores A e B pode ser calculado da seguinte forma:
 
-## $cos(A,B) = \frac{A'.B}{||A|| ||B||}$
+$$cos(A,B) = \frac{A'.B}{||A|| ||B||}$$
 
 Outra coisa que vale chamar atenção é que o cosseno entre dois vetores varia de [ -1 , 1 ], e ele pode ser interpretado como o quão próximo dois vetores são. Embora não seja uma métrica perfeita, ele irá resultar em 1 caso um vetor(A) seja uma combinação linear do outro vetor(B). E irá retornar 0 caso os vetores sejam perpendiculares. Assim, podemos ver o cos como uma % do quão próximo o nosso vetor é de outro.
 
@@ -25,11 +25,11 @@ Agora que entendemos o que é o cos e como ele é definido, precisamos entender 
 
 Considere A, B dois vetores em $R^2$ de modo que $A= [x_1,x_2]$ e $B=[y_1,y_2]$
 
-## $A'.B= x_1* y_1+x_2 *y_2$
+$$A'.B= x_1* y_1+x_2 *y_2$$
 
 Uma forma de escrever isso mais genérico e em "matemática" seria:
 
-## ${\displaystyle \sum_{i=1}^{k} x_i*y_i}$
+$${\displaystyle \sum_{i=1}^{k} x_i*y_i}$$
 
 Uma das vantagens de escrever nessa notação é que independente de qual dimensão esteja nossos vetores, essa fórmula vai funcionar. Não só isso, como também é interessante notar que mesmo que não sejamos capaz de imaginar o que seria o cosseno entre dois vetores em $R^n$ essa forma de escrever ele não só nos permite calcular, como também nos dá de fato uma medida de semelhança entre esses dois vetores.
 
@@ -37,23 +37,23 @@ Agora, falta analisarmos a parte do denominador da fórmula do cosseno:
 
 Seja A um vetor qualquer em $R^2$ tal que $A=[x_1,x_2]$ dizemos que:
 
-## $||A||^2 = A'.A$
+$$||A||^2 = A'.A$$
 
 Por comparação com a fórmula acima, podemos concluir que:
 
-## $||A||^2 = A'.A = x_1^2+x_2^2$
+$$||A||^2 = A'.A = x_1^2+x_2^2$$
 
 Assim:
 
-## $||A||^2 = x_{1}^2+x_2^2 = {\displaystyle \sum_{i=1}^{k} x_i^2} $
+$$||A||^2 = x_{1}^2+x_2^2 = {\displaystyle \sum_{i=1}^{k} x_i^2} $$
 
 Por fim, temos que:
 
-## $||A||= {\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2}} $
+ $$||A||= {\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2}} $$
 
 Agora, finalmente podemos "ver" como calcular o cosseno entre dois vetores de forma mais "matemática", que também é uma forma mais simples de ser implementada computacionalmente:
 
-## $cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} x_i*y_i}{\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2 * \displaystyle \sum_{i=1}^{k} y_i^2}}$
+$$cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} x_i*y_i}{\sqrt{\displaystyle \sum_{i=1}^{k} x_i^2 * \displaystyle \sum_{i=1}^{k} y_i^2}}$$
 
  Em estatística, essa fórmula é chamada de "Pearson correlation coefficient". Aqui, podemos ver que ela nada mais é do que cosseno entre dois vetores.
 
@@ -63,7 +63,7 @@ Por fim, um "truque" que muitas vezes é usado quando estamos calculando essa co
 
 Queremos calcular o cosseno entre dois pontos: G e J. Entretanto, se considerarmos seus vetores como vindo da origem, iremos ter uma relação que não reflete como eles se relacionam dentro do seu universo de pontos. Para corrigir isso, é comum retirarmos a média entre todos os pontos envolvidos, isso faz com que todos os pontos sejam "transladados" para a origem. Uma outra forma de entender é que a origem passa a ser o ponto M(verde na figura). Assim, temos finalmente a versão mais comum da fórmula:
 
-## $cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})*(y_i-\overline{y})}{\sqrt{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})^2 * \displaystyle \sum_{i=1}^{k} (y_i-\overline{y})^2}}$
+$$cos(A,B) = \frac{A'.B}{||A||\; ||B||} = \frac{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})*(y_i-\overline{y})}{\sqrt{\displaystyle \sum_{i=1}^{k} (x_i-\overline{x})^2 * \displaystyle \sum_{i=1}^{k} (y_i-\overline{y})^2}}$$
 
 O objetivo desse trabalho é realizar esses cálculos para imagens, para fazer isso, basta entender que imagens são na verdade matrizes de pixel e estender os somatórios acima para duas dimensões. Fazendo isso, chegamos na mesma fórmula dada pela documentação do OpenCv para o cálculo de Template Matching:
 
