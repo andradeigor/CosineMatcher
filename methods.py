@@ -2,6 +2,7 @@ from cv2 import CV_8U
 import numpy as np
 import math
 import cv2
+import time
 
 
 def TLinha(x, y, T, mediaT):
@@ -50,6 +51,7 @@ def template_matching(I, T):
 
 
 def main():
+    inicio = time.time()
     T = cv2.imread("./templates/btgtemplate.jpg")
     T_gray = cv2.cvtColor(T, cv2.COLOR_BGR2GRAY)
     I = cv2.imread("./templates/btgimage.jpg")
@@ -59,7 +61,8 @@ def main():
     local_cord = np.where(result_1 >= 0.8)
     for i in zip(*local_cord[::-1]):
         cv2.rectangle(I, i, (i[0] + x, i[1] + y), (0, 0, 255), 5)
-
+    fim = time.time()
+    print(inicio-fim)
     cv2.imshow("Eye", I)
     cv2.waitKey(0)
 
