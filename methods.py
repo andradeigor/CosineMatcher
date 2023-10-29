@@ -1,4 +1,3 @@
-from cv2 import CV_8U
 import numpy as np
 import math
 import cv2
