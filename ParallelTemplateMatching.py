@@ -1,19 +1,26 @@
-from multiprocessing import cpu_count, Process, Manager
 import numpy as np
+import concurrent.futures
 import cv2
 import math
-import time
 
 
-class Calculate(Process):
-    def __init__(self, image, template, beggin, end, mediaT, results):
-        super(Calculate, self).__init__()
-        self.image = image
-        self.template = template
-        self.beggin = beggin
-        self.end = end
-        self.mediaT = mediaT
-        self.results = results
+class ParallelTemplateMaching():
+
+    def __init__(self, imagePath, templatePath, cpus):
+        image = cv2.imread(imagePath)
+        template = cv2.imread(templatePath)
+        self.image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        self.template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+        w, h = self.template.shape
+        W, H = self.image.shape
+        self.mediaT = np.mean(self.template)  # media de valores de T
+        self.results = np.zeros((W-w+1, H-h+1))
+        self.cpus = cpus
+        self.pool = len(self.results) // self.cpus
+
+    def print(self):
+        cv2.imshow("Print", self.image)
+        cv2.waitKey(0)
 
     def R(self, x, y):
         xt, yt = self.template.shape
@@ -36,45 +43,25 @@ class Calculate(Process):
         r = r_num/r_dem
         return r
 
-    def run(self):
-        for x in range(self.beggin, self.end):
+    def template(self, beggin, end):
+        for x in range(beggin, end):
             for y in range(len(self.results[0])):
+                print(x, y)
                 self.results[x][y] = self.R(x, y)
 
+    def templateMatching(self):
+        with concurrent.futures.ProcessPoolExecutor(max_workers=self.cpus) as executor:
+            Calculates = []
 
-class ParallelTemplateMaching():
-
-    def __init__(self, imagePath, templatePath, cpus=cpu_count()):
-        image = cv2.imread(imagePath)
-        template = cv2.imread(templatePath)
-        self.image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        self.template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
-        self.cpus = cpus
-        w, h = self.template.shape
-        W, H = self.image.shape
-        self.mediaT = np.mean(self.template)  # media de valores de T
-        self.results = np.zeros((W-w+1, H-h+1))
-        self.pool = len(self.results) // self.cpus
-
-    def print(self):
-        cv2.imshow("Print", self.image)
-        cv2.waitKey(0)
-
-    def run(self):
-        Calculates = []
-
-        with Manager() as manager:
-            matrix = manager.list(self.results)
+            # intervals = [(i * self.pool, (i+1) * self.pool if i !=
+            # self.cpus-1 else len(self.results)) for i in range(self.cpus)]
             for i in range(self.cpus):
                 start = i * self.pool
-                end = (i+1) * self.pool if i != self.cpus else len(self.results)
-                c = Calculate(self.image, self.template, start,
-                              end, self.mediaT, matrix)
-                Calculates.append(c)
-                c.start()
+                end = (i+1) * self.pool if i != self.cpus - \
+                    1 else len(self.results)
+                Calculates.append(executor.submit(self.template, start, end))
+            concurrent.futures.as_completed(Calculates)
+            # for i in concurrent.futures.as_completed(Calculates):
+            # print(i.result())
 
-            for i in range(self.cpus):
-                Calculates[i].join()
-            for row in matrix:
-                print(row)
         return self.results
