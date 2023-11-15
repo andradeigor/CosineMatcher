@@ -5,12 +5,11 @@ import time
 
 def main():
     tp = ParallelTemplateMaching("./images/btgimage.jpg",
-                                 "./templates/btgtemplate.jpg", 4)
+                                 "./templates/btgtemplate.jpg")
     inicio = time.time()
-    result = tp.templateMatching()
+    tp.templateMatching()
     fim = time.time()
-    print((fim - inicio)/60)
-    print(result)
+    print(f'Rodou por {(fim-inicio)//60} minutos e {(fim-inicio)%60} segundos')
 
 
 if __name__ == "__main__":
