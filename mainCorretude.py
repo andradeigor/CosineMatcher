@@ -1,8 +1,6 @@
-from TemplateMatching import TemplateMaching
 from ParallelTemplateMatching import ParallelTemplateMaching
 import numpy as np
 import sys
-import time
 
 
 def main():

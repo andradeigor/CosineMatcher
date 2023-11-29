@@ -1,4 +1,3 @@
-from TemplateMatching import TemplateMaching
 from ParallelTemplateMatching import ParallelTemplateMaching
 import numpy as np
 import sys
